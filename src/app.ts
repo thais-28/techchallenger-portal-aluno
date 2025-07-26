@@ -1,5 +1,6 @@
 import express, {Request, Response, json} from "express";
 import route from './routes';
+import cors from "cors";
 
 
 function createApp() {
@@ -8,6 +9,8 @@ function createApp() {
     app.use(express.json());
 
     app.use("/api", route);
+
+    app.use(cors());
 
     return app;
 };
