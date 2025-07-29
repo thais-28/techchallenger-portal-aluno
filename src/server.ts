@@ -1,10 +1,19 @@
-import express, { json, Request, Response } from "express";
 import createApp from "./app";
+import { env } from "./config/env";
+import initDB from "./config/mongodb"; // ⬅️ Conecta ao banco
 
-const app = createApp();
+async function main() {
+  try {
+    await initDB();
+    const app = createApp();
 
-const port = 3333;
+    app.listen(env.PORT, () => {
+      console.log(`❤️ Server running at http://localhost:${env.PORT}`);
+    });
+  } catch (err) {
+    console.error("Erro ao iniciar a aplicação:", err);
+    process.exit(1); // Encerra com erro
+  }
+}
 
-app.listen(port, () => {
-  console.log(`❤️ Server running at port http://localhost:${port}`);
-});
+main();

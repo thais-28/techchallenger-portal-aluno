@@ -1,5 +1,5 @@
 import express, { Request, Response, json } from "express";
-import route from "./routes/routes";
+import route from "./routes";
 import cors from "cors";
 
 function createApp() {
