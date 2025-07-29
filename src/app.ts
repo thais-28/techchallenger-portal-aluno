@@ -1,21 +1,17 @@
-import express, {Request, Response, json} from "express";
-import route from './routes';
+import express, { Request, Response, json } from "express";
+import route from "./routes/routes";
 import cors from "cors";
 
-
 function createApp() {
-    const app = express();
+  const app = express();
 
-    app.use(express.json());
+  app.use(express.json());
 
-    app.use("/api", route);
+  app.use("/api", route);
 
-    app.use(cors());
+  app.use(cors());
 
-    return app;
-};
+  return app;
+}
 
 export default createApp;
-
-
-
