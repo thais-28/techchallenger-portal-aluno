@@ -3,8 +3,11 @@ import * as PostRepository from "../repositories/posts-repository";
 import * as HttpResponse from "../utils/http-helper";
 import { IPostInput } from "../types/post";
 
-export const getPostService = async () => {
-  const posts = await PostRepository.findAllPosts();
+export const getPostService = async (
+  filters: any,
+  pagination: { page: number; limit: number }
+) => {
+  const posts = await PostRepository.findAllPosts(filters, pagination);
 
   if (posts.length > 0) {
     return HttpResponse.ok(posts);

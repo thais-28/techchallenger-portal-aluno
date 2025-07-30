@@ -3,9 +3,16 @@ import { PostModel } from "../models/post";
 import { Types } from "mongoose";
 import { IPostInput } from "../types/post";
 
-export const findAllPosts = async () => {
-  // .lean() retorna POJOs em vez de Documents do Mongoose
-  return await PostModel.find().lean();
+export const findAllPosts = async (
+  filters: any = {},
+  pagination: { page: number; limit: number }
+) => {
+  const { page, limit } = pagination;
+  const skip = (page - 1) * limit;
+
+  const posts = await PostModel.find(filters).skip(skip).limit(limit).lean();
+
+  return posts;
 };
 
 export const findPostById = async (id: string) => {
