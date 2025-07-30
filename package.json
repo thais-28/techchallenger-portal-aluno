@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dist": "tsup src",
+    "test": "jest --config jest.config.ts",
     "start:dev": "npx tsx src/server.ts",
     "start:watch": "npx tsx watch --env-file=.env src/server.ts",
     "start:dist": "npm run dist && node dist/src/index.js"
@@ -17,12 +18,14 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
+    "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "jest": "^30.0.5",
     "mongodb-memory-server": "^10.1.4",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"

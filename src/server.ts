@@ -12,7 +12,7 @@ async function main() {
     });
   } catch (err) {
     console.error("Erro ao iniciar a aplicação:", err);
-    process.exit(1); // Encerra com erro
+    process.exit(1);
   }
 }
 

@@ -17,13 +17,19 @@ export const getPosts = async (req: Request, res: Response) => {
   };
 
   const httpResponse = await Service.getPostService(filters, pagination);
-  res.status(httpResponse.statusCode).json(httpResponse.body);
+  if (httpResponse.statusCode === 204) {
+    return res.sendStatus(204);
+  }
+  return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
 
 export const getPostById = async (req: Request, res: Response) => {
   const id = req.params.id;
   const httpResponse = await Service.getPostByIdService(id);
-  res.status(httpResponse.statusCode).json(httpResponse.body);
+  if (httpResponse.statusCode === 204) {
+    return res.sendStatus(204);
+  }
+  return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
 
 export const createPost = async (req: Request, res: Response) => {
@@ -37,23 +43,20 @@ export const createPost = async (req: Request, res: Response) => {
   }
 
   const postData = parseResult.data;
-  const created = await Service.createPostService(postData);
-
-  return res.status(201).json(created);
+  const createdResponse = await Service.createPostService(postData);
+  // Desempacota body para retornar apenas o objeto criado
+  return res.status(createdResponse.statusCode).json(createdResponse.body);
 };
 
 export const deletePost = async (req: Request, res: Response) => {
   const id = req.params.id;
   const httpResponse = await Service.deletePostService(id);
-
-  res.status(httpResponse.statusCode).json(httpResponse.body);
+  return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
 
 export const updatePost = async (req: Request, res: Response) => {
   const id = req.params.id;
   const bodyData: ContentModel = req.body;
-
   const httpResponse = await Service.updatePostService(id, bodyData);
-
-  res.status(httpResponse.statusCode).json(httpResponse.body);
+  return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
