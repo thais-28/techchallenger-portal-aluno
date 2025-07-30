@@ -1,5 +1,5 @@
 import { ContentModel } from "../models/content-model";
-import * as PostRepository from "../repositories/posts-repository";
+import * as PostRepository from "../repositories/postsRepository";
 import * as HttpResponse from "../utils/http-helper";
 import { IPostInput } from "../types/post";
 

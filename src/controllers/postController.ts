@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as Service from "../services/posts-service";
+import * as Service from "../services/postsService";
 import { ContentModel } from "../models/content-model";
 import { postInputSchema } from "../validations/postValidation";
 

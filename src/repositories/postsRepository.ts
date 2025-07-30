@@ -1,5 +1,5 @@
 // src/repositories/postRepository.ts
-import { PostModel } from "../models/post";
+import { PostModel } from "../models/postModel";
 import { Types } from "mongoose";
 import { IPostInput } from "../types/post";
 

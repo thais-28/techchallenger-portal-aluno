@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 import { env } from "./env";
-import { PostModel } from "../models/post";
+import { PostModel } from "../models/postModel";
 
 async function initDB() {
   const uri = `mongodb://${env.MONGO_USER}:${env.MONGO_PASSWORD}@${env.MONGO_HOST}:${env.MONGO_PORT}/${env.DATABASE}?authSource=admin`;
