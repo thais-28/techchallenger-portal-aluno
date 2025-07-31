@@ -32,7 +32,7 @@ describe("Posts API Integration", () => {
     it("deve retornar 204 quando não houver posts", async () => {
       const res = await request(app).get("/api/posts");
       expect(res.status).toBe(204);
-      expect(res.body).toEqual(null);
+      expect(res.body).toEqual({});
     });
   });
 
@@ -103,13 +103,13 @@ describe("Posts API Integration", () => {
       const fakeId = new mongoose.Types.ObjectId().toString();
       const res = await request(app).get(`/api/posts/${fakeId}`);
       expect(res.status).toBe(204);
-      expect(res.body).toEqual(null);
+      expect(res.body).toEqual({});
     });
 
     it("deve retornar 204 para id inválido", async () => {
       const res = await request(app).get("/api/posts/123-invalido");
       expect(res.status).toBe(204);
-      expect(res.body).toEqual(null);
+      expect(res.body).toEqual({});
     });
   });
 

@@ -15,16 +15,19 @@ describe("PostController", () => {
   let res: Partial<Response>;
   let statusMock: jest.Mock;
   let jsonMock: jest.Mock;
+  let sendStatusMock: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
 
     statusMock = jest.fn().mockReturnThis();
     jsonMock = jest.fn();
+    sendStatusMock = jest.fn();
 
     res = {
       status: statusMock,
       json: jsonMock,
+      sendStatus: sendStatusMock,
     };
     req = {
       query: {},
@@ -61,8 +64,7 @@ describe("PostController", () => {
         {},
         { page: 1, limit: 10 }
       );
-      expect(statusMock).toHaveBeenCalledWith(204);
-      expect(jsonMock).toHaveBeenCalledWith(null);
+      expect(sendStatusMock).toHaveBeenCalledWith(204);
     });
   });
 
@@ -92,8 +94,7 @@ describe("PostController", () => {
       await Controller.getPostById(req as Request, res as Response);
 
       expect(Service.getPostByIdService).toHaveBeenCalledWith("naoexiste");
-      expect(statusMock).toHaveBeenCalledWith(204);
-      expect(jsonMock).toHaveBeenCalledWith(null);
+      expect(sendStatusMock).toHaveBeenCalledWith(204);
     });
   });
 
@@ -105,7 +106,6 @@ describe("PostController", () => {
         data: validData,
       });
 
-      // Mantemos o mesmo formato de createdResponse usado no service
       const createdResponse = {
         statusCode: 201,
         body: { id: "new", ...validData },
@@ -119,7 +119,6 @@ describe("PostController", () => {
 
       expect(Service.createPostService).toHaveBeenCalledWith(validData);
       expect(statusMock).toHaveBeenCalledWith(201);
-      // **Altere aqui** para body
       expect(jsonMock).toHaveBeenCalledWith(createdResponse.body);
     });
   });
