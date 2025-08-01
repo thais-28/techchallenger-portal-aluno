@@ -1,20 +1,26 @@
-# Dockerfile
-FROM node:20.3.1-alpine
+# Etapa 1 – Build com dependências completas
+FROM node:20.3.1-alpine AS builder
 
-# Diretório de trabalho dentro do container
 WORKDIR /usr/src/app
 
-# Copia package.json + package-lock.json (ou yarn.lock)
 COPY package*.json ./
+RUN npm install
 
-# Instala dependências
-RUN npm ci
-
-# Copia todo o código
 COPY . .
+RUN npm run dist
 
-# Exponha a porta (opcional, só para docs)
+# Etapa 2 – Apenas runtime (produção enxuta)
+FROM node:20.3.1-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/package*.json ./
+RUN npm ci --omit=dev
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Porta de exposição
 EXPOSE 3333
 
-# Comando para iniciar em modo dev com tsx
-CMD ["npm", "run", "start:dev"]
+# Subida final da aplicação transpilada
+CMD ["node", "dist/server.js"]
