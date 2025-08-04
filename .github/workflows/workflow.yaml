@@ -1,6 +1,10 @@
 name: Continuous Integration
 
-on: [pull_request]
+on:
+  push:
+    branches: [main, master] # você pode incluir outras branches se desejar
+  pull_request:
+    branches: [main, master]
 
 jobs:
   test:
