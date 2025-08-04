@@ -170,6 +170,7 @@ Durante o desenvolvimento, enfrentamos e solucionamos os seguintes pontos:
 
 - Gabriel Silvio – Desenvolvedor Full Stack
 - Thais
+- Caio
 
 ---
 
