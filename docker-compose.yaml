@@ -31,7 +31,6 @@ services:
     depends_on:
       - mongo # Garante que o Mongo suba antes da API
     volumes:
-      - .:/usr/src/app # Monta seu código dentro do container
       - /usr/src/app/node_modules # Evita sobrescrever node_modules do container
 
 volumes:

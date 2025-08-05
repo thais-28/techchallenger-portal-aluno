@@ -169,8 +169,8 @@ Durante o desenvolvimento, enfrentamos e solucionamos os seguintes pontos:
 ## 👥 Equipe
 
 - Gabriel Silvio – Desenvolvedor Full Stack
-- Thais
-- Caio
+- Thais Santos
+- Caio Manhães
 
 ---
 
