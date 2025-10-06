@@ -7,10 +7,19 @@ import cors from "cors";
 function createApp() {
   const app = express();
 
+  // CORS deve vir antes das rotas
+  app.use(
+    cors({
+      origin: "http://localhost:3000", // Permite requisições do frontend
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  );
+
   app.use(express.json());
   app.use("/api", route);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  app.use(cors());
 
   return app;
 }
