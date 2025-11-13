@@ -1,18 +1,30 @@
 import { Router } from "express";
-import * as PostController from "../controllers/postController";
+import postRoutes from "./postRoutes";
+import teacherRoutes from "./teacherRoutes";
 
 const router = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Posts
+ *     description: Gerenciamento de posts
+ *   - name: Teachers
+ *     description: Gerenciamento de professores
+ * 
  * components:
  *   schemas:
  *     Post:
  *       type: object
+ *       required:
+ *         - title
+ *         - content
+ *         - author
+ *         - subject
  *       properties:
  *         id:
  *           type: string
- *           description: ID único gerado pelo MongoDB
+ *           description: ID do post
  *         title:
  *           type: string
  *           description: Título do post
@@ -21,52 +33,57 @@ const router = Router();
  *           description: Conteúdo do post
  *         author:
  *           type: string
- *           description: Nome do autor
+ *           description: Autor do post
  *         subject:
  *           type: string
  *           description: Assunto do post
- *       required:
- *         - title
- *         - content
- *         - author
- *         - subject
- *     ErrorResponse:
+ *     Teacher:
  *       type: object
+ *       required:
+ *         - nome
+ *         - cpf
+ *         - nascimento
+ *         - telefone
+ *         - disciplina
+ *         - email
+ *         - matricula
+ *         - senha
  *       properties:
- *         message:
+ *         id:
  *           type: string
- *           description: Descrição do erro
- *         errors:
- *           type: object
- *           additionalProperties:
- *             type: array
- *             items:
- *               type: string
- *       example:
- *         message: Erro de validação
- *         errors:
- *           title:
- *             - "Título é obrigatório"
- *   parameters:
- *     postId:
- *       name: id
- *       in: path
- *       description: ID do post
- *       required: true
- *       schema:
- *         type: string
- *
- * tags:
- *   - name: Posts
- *     description: Endpoints para gerenciamento de posts
+ *           description: ID do professor
+ *         nome:
+ *           type: string
+ *           description: Nome completo
+ *         cpf:
+ *           type: string
+ *           description: CPF do professor
+ *         nascimento:
+ *           type: string
+ *           description: Data de nascimento
+ *         telefone:
+ *           type: string
+ *           description: Telefone de contato
+ *         disciplina:
+ *           type: string
+ *           description: Disciplina que leciona
+ *         email:
+ *           type: string
+ *           description: Email do professor
+ *         matricula:
+ *           type: string
+ *           description: Número de matrícula
+ *         senha:
+ *           type: string
+ *           description: Senha de acesso
  */
 
 /**
  * @swagger
- * /api/posts:
+ * /api/teachers:
  *   get:
- *     summary: Lista posts com filtros e paginação
- *     tags: [Posts]
+ *     summary: Lista todos os professores com filtros e paginação
+ *     tags: [Teachers]
  *     parameters:
  *       - in: query
  *         name: page
@@ -81,55 +98,78 @@ const router = Router();
  *           default: 10
  *         description: Quantidade de itens por página
  *       - in: query
- *         name: author
+ *         name: nome
  *         schema:
  *           type: string
- *         description: Filtra por autor
+ *         description: Filtrar por nome
  *       - in: query
- *         name: subject
+ *         name: email
  *         schema:
  *           type: string
- *         description: Filtra por assunto
+ *         description: Filtrar por email
+ *       - in: query
+ *         name: matricula
+ *         schema:
+ *           type: string
+ *         description: Filtrar por matrícula
+ *       - in: query
+ *         name: disciplina
+ *         schema:
+ *           type: string
+ *         description: Filtrar por disciplina
  *     responses:
  *       200:
- *         description: Lista de posts retornada com sucesso
+ *         description: Lista de professores retornada com sucesso
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Post'
+ *                 $ref: '#/components/schemas/Teacher'
  *       204:
- *         description: Nenhum post encontrado
- */
-router.get("/posts", PostController.getPosts);
-
-/**
- * @swagger
- * /api/posts/{id}:
- *   get:
- *     summary: Retorna um post pelo ID
- *     tags: [Posts]
- *     parameters:
- *       - $ref: '#/components/parameters/postId'
+ *         description: Nenhum professor encontrado
+ *   post:
+ *     summary: Cria um novo professor
+ *     tags: [Teachers]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Teacher'
+ *           example:
+ *             nome: João Silva
+ *             cpf: "12345678900"
+ *             nascimento: "1985-05-15"
+ *             telefone: "(11) 98765-4321"
+ *             disciplina: Matemática
+ *             email: joao.silva@escola.com
+ *             matricula: "20231001"
+ *             senha: senha123
  *     responses:
- *       200:
- *         description: Post encontrado com sucesso
+ *       201:
+ *         description: Professor criado com sucesso
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Post'
- *       204:
- *         description: Post não encontrado
+ *               $ref: '#/components/schemas/Teacher'
+ *       400:
+ *         description: Dados inválidos ou campos obrigatórios faltando
  */
-router.get("/posts/:id", PostController.getPostById);
 
 /**
  * @swagger
- * /api/posts:
- *   post:
- *     summary: Cria um novo post
- *     tags: [Posts]
+ * /api/teachers/{id}:
+ *   put:
+ *     summary: Atualiza um professor existente
+ *     tags: [Teachers]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do professor
  *     requestBody:
  *       required: true
  *       content:
@@ -137,46 +177,44 @@ router.get("/posts/:id", PostController.getPostById);
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               nome:
  *                 type: string
- *               content:
+ *               cpf:
  *                 type: string
- *               author:
+ *               nascimento:
  *                 type: string
- *               subject:
+ *               telefone:
  *                 type: string
- *             required:
- *               - title
- *               - content
- *               - author
- *               - subject
- *     responses:
- *       201:
- *         description: Post criado com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Post'
- *       400:
- *         description: Dados inválidos ou faltando campos obrigatórios
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- */
-router.post("/posts", PostController.createPost);
-
-/**
- * @swagger
- * /api/posts/{id}:
- *   delete:
- *     summary: Deleta um post pelo ID
- *     tags: [Posts]
- *     parameters:
- *       - $ref: '#/components/parameters/postId'
+ *               disciplina:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               matricula:
+ *                 type: string
+ *               senha:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Post deletado com sucesso
+ *         description: Professor atualizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Teacher'
+ *       400:
+ *         description: Erro de validação ou professor não encontrado
+ *   delete:
+ *     summary: Deleta um professor
+ *     tags: [Teachers]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do professor
+ *     responses:
+ *       200:
+ *         description: Professor deletado com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -184,53 +222,12 @@ router.post("/posts", PostController.createPost);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Deletado com sucesso
+ *                   example: Professor deletado com sucesso
  *       400:
- *         description: ID inválido ou post não encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         description: Professor não encontrado ou ID inválido
  */
-router.delete("/posts/:id", PostController.deletePost);
 
-/**
- * @swagger
- * /api/posts/{id}:
- *   patch:
- *     summary: Atualiza parcialmente um post
- *     tags: [Posts]
- *     parameters:
- *       - $ref: '#/components/parameters/postId'
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               content:
- *                 type: string
- *               author:
- *                 type: string
- *               subject:
- *                 type: string
- *     responses:
- *       200:
- *         description: Post atualizado com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Post'
- *       400:
- *         description: Erro de validação ou post não encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- */
-router.patch("/posts/:id", PostController.updatePost);
+router.use("/posts", postRoutes);
+router.use("/teachers", teacherRoutes);
 
 export default router;

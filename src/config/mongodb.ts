@@ -1,6 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 import { env } from "./env";
 import { PostModel } from "../models/postModel";
+import { TeacherModel } from "../models/teacherModel";
 
 async function initDB() {
   const uri = `mongodb://${env.MONGO_USER}:${env.MONGO_PASSWORD}@${env.MONGO_HOST}:${env.MONGO_PORT}/${env.DATABASE}?authSource=admin`;
@@ -13,6 +14,9 @@ async function initDB() {
       // Garante que a coleção exista
       await PostModel.init();
       console.log("Coleção 'posts' pronta para uso!.");
+
+      await TeacherModel.init();
+      console.log("Coleção 'teachers' pronta para uso!.");
     })
     .catch((err) => {
       console.error("Erro ao conectar ao MongoDB:", err);
