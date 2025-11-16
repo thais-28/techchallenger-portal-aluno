@@ -34,9 +34,7 @@ export const swaggerOptions = {
       },
     ],
   },
-  apis: isDevelopment
-    ? [path.join(__dirname, "../routes/**/*.ts")]
-    : [path.join(__dirname, "./routes/**/*.js")],
+  apis: ['./src/routes/*.ts', './src/controllers/*.ts'],
 };
 
 console.log("🔍 APIs configuradas:", swaggerOptions.apis);
