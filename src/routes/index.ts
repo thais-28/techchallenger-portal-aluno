@@ -2,6 +2,7 @@ import { Router } from "express";
 import postRoutes from "./postRoutes";
 import teacherRoutes from "./teacherRoutes";
 import studentRoutes from "./studentRoutes";
+import authRoutes from "./authRoutes";
 
 const router = Router();
 
@@ -378,5 +379,6 @@ const router = Router();
 router.use("/posts", postRoutes);
 router.use("/teachers", teacherRoutes);
 router.use("/students", studentRoutes);
+router.use("/auth", authRoutes);
 
 export default router;

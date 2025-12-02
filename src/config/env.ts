@@ -8,6 +8,8 @@ const envSchema = z.object({
   MONGO_PORT: z.coerce.number().default(27017),
   DATABASE: z.string().default("mongodb"),
   MONGO_HOST: z.string().default("localhost"),
+  JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string().default("7d"),
 });
 
 const _env = envSchema.safeParse(process.env);

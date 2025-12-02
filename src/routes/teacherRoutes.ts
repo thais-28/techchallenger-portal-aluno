@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as TeacherController from "../controllers/teacherController";
+import { authMiddleware, teacherOnly } from "../middlewares/auth";
 
 const router = Router();
 
@@ -47,8 +48,14 @@ const router = Router();
  *         description: Lista de professores
  *       204:
  *         description: Nenhum professor encontrado
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
+ *     security:
+ *       - bearerAuth: []
  */
-router.get("/", TeacherController.getTeacher);
+router.get("/", authMiddleware, teacherOnly, TeacherController.getTeacher);
 
 /**
  * @swagger
@@ -93,8 +100,14 @@ router.get("/", TeacherController.getTeacher);
  *         description: Professor criado com sucesso
  *       400:
  *         description: Dados inválidos
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
+ *     security:
+ *       - bearerAuth: []
  */
-router.post("/", TeacherController.createTeacher);
+router.post("/", authMiddleware, teacherOnly, TeacherController.createTeacher);
 
 /**
  * @swagger
@@ -137,8 +150,19 @@ router.post("/", TeacherController.createTeacher);
  *         description: Professor atualizado
  *       400:
  *         description: Erro ao atualizar
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
+ *     security:
+ *       - bearerAuth: []
  */
-router.put("/:id", TeacherController.updateTeacher);
+router.put(
+  "/:id",
+  authMiddleware,
+  teacherOnly,
+  TeacherController.updateTeacher
+);
 
 /**
  * @swagger
@@ -158,7 +182,18 @@ router.put("/:id", TeacherController.updateTeacher);
  *         description: Professor deletado
  *       400:
  *         description: Professor não encontrado
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
+ *     security:
+ *       - bearerAuth: []
  */
-router.delete("/:id", TeacherController.deleteTeacher);
+router.delete(
+  "/:id",
+  authMiddleware,
+  teacherOnly,
+  TeacherController.deleteTeacher
+);
 
 export default router;

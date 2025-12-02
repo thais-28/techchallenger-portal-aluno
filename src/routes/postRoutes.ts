@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as PostController from "../controllers/postController";
+import { authMiddleware, teacherOnly } from "../middlewares/auth";
 
 const router = Router();
 
@@ -66,6 +67,8 @@ router.get("/:id", PostController.getPostById);
  *   post:
  *     summary: Cria um novo post
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -77,8 +80,12 @@ router.get("/:id", PostController.getPostById);
  *         description: Post criado com sucesso
  *       400:
  *         description: Dados inválidos
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
  */
-router.post("/", PostController.createPost);
+router.post("/", authMiddleware, teacherOnly, PostController.createPost);
 
 /**
  * @swagger
@@ -86,6 +93,8 @@ router.post("/", PostController.createPost);
  *   patch:
  *     summary: Atualiza parcialmente um post
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -103,8 +112,12 @@ router.post("/", PostController.createPost);
  *         description: Post atualizado
  *       400:
  *         description: Erro de validação
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
  */
-router.patch("/:id", PostController.updatePost);
+router.patch("/:id", authMiddleware, teacherOnly, PostController.updatePost);
 
 /**
  * @swagger
@@ -112,6 +125,8 @@ router.patch("/:id", PostController.updatePost);
  *   delete:
  *     summary: Deleta um post
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -123,7 +138,11 @@ router.patch("/:id", PostController.updatePost);
  *         description: Post deletado
  *       400:
  *         description: Post não encontrado
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *       403:
+ *         description: Acesso negado - apenas professores
  */
-router.delete("/:id", PostController.deletePost);
+router.delete("/:id", authMiddleware, teacherOnly, PostController.deletePost);
 
 export default router;
