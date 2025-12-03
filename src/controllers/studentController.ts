@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import * as Service from "../services/studentService";
-import { studentInputSchema } from "../validations/studentValidator";
+import {
+  studentInputSchema,
+  studentUpdateSchema,
+} from "../validations/studentValidator";
 import { IStudent } from "../types/student";
 
 export const getStudent = async (req: Request, res: Response) => {
@@ -48,7 +51,16 @@ export const deleteStudent = async (req: Request, res: Response) => {
 
 export const updateStudent = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const bodyData: Partial<IStudent> = req.body;
+  const parseResult = studentUpdateSchema.safeParse(req.body);
+
+  if (!parseResult.success) {
+    return res.status(400).json({
+      message: "Dados inválidos",
+      errors: parseResult.error.flatten().fieldErrors,
+    });
+  }
+
+  const bodyData: Partial<IStudent> = parseResult.data;
   const httpResponse = await Service.updateStudentService(id, bodyData);
   return res.status(httpResponse.statusCode).json(httpResponse.body);
 };

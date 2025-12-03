@@ -8,12 +8,12 @@
     "test": "jest --config jest.config.ts",
     "start:dev": "npx tsx src/server.ts",
     "start:watch": "npx tsx watch --env-file=.env src/server.ts",
-    "start:dist": "npm run dist && node dist/src/server.js"
+    "start:dist": "npm run dist && node dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",

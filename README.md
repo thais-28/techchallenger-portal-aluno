@@ -40,6 +40,41 @@ src/
 
 ---
 
+## 🎬 Testando a API
+
+### 📝 Exemplo Completo de Uso
+
+Após iniciar a aplicação, você pode testar todas as funcionalidades:
+
+```bash
+# 1. Fazer login como professor
+curl -X POST http://localhost:3333/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "joao.silva@escola.com", "senha": "senha123"}'
+
+# Resposta: { "token": "eyJhbG...", "user": {...} }
+
+# 2. Usar o token para criar um post
+curl -X POST http://localhost:3333/api/posts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI" \
+  -d '{
+    "title": "Nova Aula",
+    "content": "Conteúdo da aula...",
+    "author": "Prof. João Silva",
+    "subject": "Matemática"
+  }'
+
+# 3. Listar posts (público - sem token)
+curl http://localhost:3333/api/posts
+
+# 4. Listar professores (requer token de professor)
+curl http://localhost:3333/api/teachers \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
+
+---
+
 ## 🔐 Autenticação e Autorização
 
 ### 🔑 Login
@@ -248,6 +283,33 @@ docker-compose up --build
 ```
 
 A aplicação estará disponível em `http://localhost:3333`.
+
+### 🌱 Dados de Exemplo (Seed)
+
+Ao iniciar a aplicação pela primeira vez, o banco de dados é automaticamente populado com dados de exemplo:
+
+**👨‍🏫 Professores:**
+
+- Prof. João Silva (Matemática) - `joao.silva@escola.com`
+- Profa. Maria Santos (História) - `maria.santos@escola.com`
+- Prof. Carlos Oliveira (Ciências) - `carlos.oliveira@escola.com`
+
+**👨‍🎓 Alunos:**
+
+- Ana Paula Costa (3A) - `ana.costa@escola.com`
+- Pedro Henrique Souza (2B) - `pedro.souza@escola.com`
+- Juliana Ferreira (3A) - `juliana.ferreira@escola.com`
+- Lucas Almeida (2B) - `lucas.almeida@escola.com`
+
+**📝 Posts:**
+
+- 6 posts educativos sobre Matemática, História e Ciências
+
+**🔑 Senha padrão para todos:** `senha123`
+
+Estes dados facilitam a demonstração e testes da API sem necessidade de configuração manual.
+
+### Variáveis de Ambiente
 
 As variáveis `.env` utilizadas são:
 
