@@ -2,17 +2,15 @@ import swaggerJsdoc from "swagger-jsdoc";
 import { env } from "./env";
 import path from "path";
 import fs from "fs";
-import { fileURLToPath } from "url";
 
-// Obter __dirname de forma compatível com ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Usar __dirname diretamente - Jest fornece isso em modo CommonJS
+const swaggerDirname = __dirname;
 
 // Detectar se estamos em ambiente de desenvolvimento ou produção
-const isDevelopment = fs.existsSync(path.join(__dirname, "../routes"));
+const isDevelopment = fs.existsSync(path.join(swaggerDirname, "../routes"));
 const routesPath = isDevelopment
-  ? path.join(__dirname, "../routes")
-  : path.join(__dirname, "./routes");
+  ? path.join(swaggerDirname, "../routes")
+  : path.join(swaggerDirname, "./routes");
 
 console.log("📂 Ambiente:", isDevelopment ? "Desenvolvimento" : "Produção");
 console.log("📂 Diretório routes:", routesPath);

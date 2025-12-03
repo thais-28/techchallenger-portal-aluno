@@ -9,6 +9,8 @@ const config: Config = {
   transform: {
     "^.+\\.ts$": ["ts-jest", { isolatedModules: true }],
   },
+  setupFilesAfterEnv: ["<rootDir>/src/tests/setup.ts"],
+  testTimeout: 120000,
   verbose: true,
 };
 

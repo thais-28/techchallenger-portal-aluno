@@ -2,8 +2,9 @@
 import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import createApp from "../../../src/app";
-import { PostModel } from "../../../src/models/postModel";
+import { createMongoMemoryServer } from "../helpers/mongoMemorySetup";
+import createApp from "../../app";
+import { PostModel } from "../../models/postModel";
 
 describe("Posts API Integration", () => {
   let mongod: MongoMemoryServer;
@@ -11,7 +12,7 @@ describe("Posts API Integration", () => {
 
   beforeAll(async () => {
     // Inicializa o Mongo em memória
-    mongod = await MongoMemoryServer.create();
+    mongod = await createMongoMemoryServer();
     const uri = mongod.getUri();
     await mongoose.connect(uri);
 
