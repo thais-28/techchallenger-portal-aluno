@@ -1,7 +1,7 @@
 import * as TeacherRepository from "../repositories/teacherRepository";
 import * as HttpResponse from "../utils/http-helper";
 import { ITeacher } from "../types/teacher";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 export const getTeacherService = async (
   filters: any,
@@ -28,7 +28,9 @@ export const createTeacherService = async (teacherData: ITeacher) => {
     senha: hashedPassword,
   };
 
-  const createdTeacher = await TeacherRepository.createTeacher(teacherWithHashedPassword);
+  const createdTeacher = await TeacherRepository.createTeacher(
+    teacherWithHashedPassword
+  );
   return HttpResponse.created(createdTeacher);
 };
 
@@ -52,6 +54,11 @@ export const updateTeacherService = async (
     return HttpResponse.badRequest({
       message: "Nenhum dado enviado para atualização",
     });
+  }
+
+  // Se estiver atualizando a senha, fazer hash
+  if (content.senha) {
+    content.senha = await bcrypt.hash(content.senha, 10);
   }
 
   const updatedTeacher = await TeacherRepository.updateTeacher(id, content);

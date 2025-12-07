@@ -112,8 +112,8 @@ router.post("/", authMiddleware, teacherOnly, TeacherController.createTeacher);
 /**
  * @swagger
  * /api/teachers/{id}:
- *   put:
- *     summary: Atualiza um professor
+ *   patch:
+ *     summary: Atualiza parcialmente um professor
  *     tags: [Teachers]
  *     parameters:
  *       - in: path
@@ -157,7 +157,7 @@ router.post("/", authMiddleware, teacherOnly, TeacherController.createTeacher);
  *     security:
  *       - bearerAuth: []
  */
-router.put(
+router.patch(
   "/:id",
   authMiddleware,
   teacherOnly,

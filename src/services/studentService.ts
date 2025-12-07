@@ -1,86 +1,73 @@
 import { IStudent, IStudentInput } from "../types/student";
-// Importe seu repositório/model de Student aqui
-
-interface HttpResponse {
-  statusCode: number;
-  body: any;
-}
+import * as StudentRepository from "../repositories/studentRepository";
+import * as HttpResponse from "../utils/http-helper";
+import bcrypt from "bcrypt";
 
 export const getStudentService = async (
   filters: any,
   pagination: { page: number; limit: number }
-): Promise<HttpResponse> => {
-  try {
-    // Implemente a busca no banco de dados
-    // const students = await StudentRepository.find(filters, pagination);
-    
-    return {
-      statusCode: 200,
-      body: {
-        data: [], // seus dados aqui
-        pagination: {
-          page: pagination.page,
-          limit: pagination.limit,
-          total: 0,
-        },
-      },
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: { message: "Erro ao buscar estudantes" },
-    };
+) => {
+  const students = await StudentRepository.findAllStudents(filters, pagination);
+
+  if (students.length > 0) {
+    return HttpResponse.ok(students);
   }
+
+  return HttpResponse.noContent();
 };
 
-export const createStudentService = async (
-  data: IStudentInput
-): Promise<HttpResponse> => {
-  try {
-    // const newStudent = await StudentRepository.create(data);
-    return {
-      statusCode: 201,
-      body: {}, // newStudent
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: { message: "Erro ao criar estudante" },
-    };
+export const createStudentService = async (studentData: IStudentInput) => {
+  if (!studentData || Object.keys(studentData).length === 0) {
+    return HttpResponse.badRequest({ message: "Dados obrigatórios ausentes" });
   }
+
+  // Hash da senha
+  const hashedPassword = await bcrypt.hash(studentData.senha, 10);
+  const studentWithHashedPassword = {
+    ...studentData,
+    senha: hashedPassword,
+  };
+
+  const createdStudent = await StudentRepository.createStudent(
+    studentWithHashedPassword
+  );
+  return HttpResponse.created(createdStudent);
 };
 
 export const updateStudentService = async (
   id: string,
-  data: Partial<IStudent>
-): Promise<HttpResponse> => {
-  try {
-    // const updatedStudent = await StudentRepository.update(id, data);
-    return {
-      statusCode: 200,
-      body: {}, // updatedStudent
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: { message: "Erro ao atualizar estudante" },
-    };
+  content: Partial<IStudent>
+) => {
+  if (!content || Object.keys(content).length === 0) {
+    return HttpResponse.badRequest({
+      message: "Nenhum dado enviado para atualização",
+    });
   }
+
+  // Se estiver atualizando a senha, fazer hash
+  if (content.senha) {
+    content.senha = await bcrypt.hash(content.senha, 10);
+  }
+
+  const updatedStudent = await StudentRepository.updateStudent(id, content);
+
+  if (!updatedStudent) {
+    return HttpResponse.badRequest({
+      message: "Student não encontrado ou ID inválido",
+    });
+  }
+
+  return HttpResponse.ok(updatedStudent);
 };
 
-export const deleteStudentService = async (
-  id: string
-): Promise<HttpResponse> => {
-  try {
-    // await StudentRepository.delete(id);
-    return {
-      statusCode: 200,
-      body: { message: "Estudante deletado com sucesso" },
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: { message: "Erro ao deletar estudante" },
-    };
+export const deleteStudentService = async (id: string) => {
+  const deleted = await StudentRepository.deleteOneStudent(id);
+
+  if (deleted) {
+    return HttpResponse.ok({ message: "Deletado com sucesso" });
   }
+
+  return HttpResponse.badRequest({
+    message: "Student não encontrado ou ID inválido",
+  });
 };
