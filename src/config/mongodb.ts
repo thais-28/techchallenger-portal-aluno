@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import { env } from "./env";
 import { PostModel } from "../models/postModel";
 import { TeacherModel } from "../models/teacherModel";
@@ -12,15 +12,14 @@ async function initDB() {
     .then(async () => {
       console.log("MongoDB conectado.");
 
-      // Garante que a coleção exista
       await PostModel.init();
-      console.log("Coleção 'posts' pronta para uso!.");
+      console.log("Coleção 'posts' pronta para uso.");
 
       await TeacherModel.init();
-      console.log("Coleção 'teachers' pronta para uso!.");
+      console.log("Coleção 'teachers' pronta para uso.");
 
       await StudentModel.init();
-      console.log("Coleção 'students' pronta para uso!.");
+      console.log("Coleção 'students' pronta para uso.");
     })
     .catch((err) => {
       console.error("Erro ao conectar ao MongoDB:", err);

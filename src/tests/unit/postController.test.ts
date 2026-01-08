@@ -1,10 +1,8 @@
-// tests/unit/controllers/postController.test.ts
 import { Request, Response } from "express";
 import * as Service from "../../../src/services/postsService";
 import { postInputSchema } from "../../../src/validations/postValidation";
 import * as Controller from "../../../src/controllers/postController";
 
-// Mock dos serviços e do schema de validação
 jest.mock("../../../src/services/postsService");
 jest.mock("../../../src/validations/postValidation", () => ({
   postInputSchema: { safeParse: jest.fn() },

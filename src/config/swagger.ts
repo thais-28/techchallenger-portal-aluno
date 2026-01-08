@@ -4,11 +4,9 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 
-// Obter __dirname em módulos ES (tsx roda em ES modules por padrão)
 const __filename = fileURLToPath(import.meta.url);
 const swaggerDirname = path.dirname(__filename);
 
-// Detectar se estamos em ambiente de desenvolvimento ou produção
 const isDevelopment = fs.existsSync(path.join(swaggerDirname, "../routes"));
 const routesPath = isDevelopment
   ? path.join(swaggerDirname, "../routes")

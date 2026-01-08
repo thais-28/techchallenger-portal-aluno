@@ -1,4 +1,3 @@
-// src/tests/unit/teacherService.test.ts
 import * as TeacherService from "../../services/teacherService";
 import * as TeacherRepository from "../../repositories/teacherRepository";
 import bcrypt from "bcrypt";

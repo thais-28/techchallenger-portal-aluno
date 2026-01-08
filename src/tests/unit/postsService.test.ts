@@ -1,9 +1,7 @@
-// src/tests/unit/postsService.test.ts
 import * as PostRepository from "../../../src/repositories/postsRepository";
 import * as Service from "../../../src/services/postsService";
 import { IPostInput } from "../../../src/types/post";
 
-// Mock de todos os métodos do repositório
 jest.mock("../../../src/repositories/postsRepository");
 
 describe("postsService", () => {

@@ -1,11 +1,8 @@
-// src/tests/unit/teacherController.test.ts
 import { Request, Response } from "express";
 import * as TeacherService from "../../services/teacherService";
 
-// Mock do service
 jest.mock("../../services/teacherService");
 
-// Mock do validator - deve ser definido antes de importar o controller
 const mockInputSafeParse = jest.fn();
 const mockUpdateSafeParse = jest.fn();
 jest.mock("../../validations/teacherValidator", () => ({
@@ -17,7 +14,6 @@ jest.mock("../../validations/teacherValidator", () => ({
   },
 }));
 
-// Importar após os mocks
 import * as TeacherController from "../../controllers/teacherController";
 
 describe("TeacherController", () => {
