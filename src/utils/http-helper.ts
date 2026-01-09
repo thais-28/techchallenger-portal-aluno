@@ -1,6 +1,6 @@
 import { HttpResponse } from "../models/http-response-model";
 
-export const ok = async (data: any): Promise<HttpResponse> => {
+export const ok = async (data: unknown): Promise<HttpResponse> => {
   return {
     statusCode: 200,
     body: data,
@@ -23,9 +23,9 @@ export const badRequest = async (error: {
   };
 };
 
-export const created = async (createdPost: any): Promise<HttpResponse> => {
+export const created = async (data: unknown): Promise<HttpResponse> => {
   return {
     statusCode: 201,
-    body: createdPost ?? "Successfully created",
+    body: data ?? "Successfully created",
   };
 };

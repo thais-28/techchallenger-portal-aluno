@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 import { IPostInput } from "../types/post";
 
 export const findAllPosts = async (
-  filters: any = {},
+  filters: Record<string, unknown> = {},
   pagination: { page: number; limit: number }
 ) => {
   const { page, limit } = pagination;

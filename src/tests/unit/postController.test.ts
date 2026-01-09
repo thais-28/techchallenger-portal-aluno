@@ -34,14 +34,14 @@ describe("PostController", () => {
     };
   });
 
-  describe("getPosts", () => {
+  describe("getPost", () => {
     it("deve aplicar filtros e paginação e retornar os posts", async () => {
       const fakeResponse = { statusCode: 200, body: [{ id: "1", title: "A" }] };
       (Service.getPostService as jest.Mock).mockResolvedValue(fakeResponse);
 
       req.query = { page: "2", limit: "5", author: "John", subject: "News" };
 
-      await Controller.getPosts(req as Request, res as Response);
+      await Controller.getPost(req as Request, res as Response);
 
       expect(Service.getPostService).toHaveBeenCalledWith(
         { author: "John", subject: "News" },
@@ -55,8 +55,7 @@ describe("PostController", () => {
       const fakeResponse = { statusCode: 204, body: null };
       (Service.getPostService as jest.Mock).mockResolvedValue(fakeResponse);
 
-      // req.query já vazio por default
-      await Controller.getPosts(req as Request, res as Response);
+      await Controller.getPost(req as Request, res as Response);
 
       expect(Service.getPostService).toHaveBeenCalledWith(
         {},

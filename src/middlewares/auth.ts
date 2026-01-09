@@ -26,7 +26,7 @@ export const authMiddleware = (
     const decoded = verifyToken(token);
     req.user = decoded;
     next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({ message: "Token inválido" });
   }
 };

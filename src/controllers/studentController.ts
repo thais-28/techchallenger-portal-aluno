@@ -38,8 +38,8 @@ export const createStudent = async (req: Request, res: Response) => {
     });
   }
 
-  const postData = parseResult.data;
-  const createdResponse = await Service.createStudentService(postData);
+  const studentData: IStudent = parseResult.data;
+  const createdResponse = await Service.createStudentService(studentData);
   return res.status(createdResponse.statusCode).json(createdResponse.body);
 };
 

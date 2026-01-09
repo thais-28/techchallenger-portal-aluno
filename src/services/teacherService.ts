@@ -4,7 +4,7 @@ import { ITeacher } from "../types/teacher";
 import bcrypt from "bcrypt";
 
 export const getTeacherService = async (
-  filters: any,
+  filters: Record<string, unknown>,
   pagination: { page: number; limit: number }
 ) => {
   const teachers = await TeacherRepository.findAllTeachers(filters, pagination);
@@ -21,7 +21,6 @@ export const createTeacherService = async (teacherData: ITeacher) => {
     return HttpResponse.badRequest({ message: "Dados obrigatórios ausentes" });
   }
 
-  // Hash da senha
   const hashedPassword = await bcrypt.hash(teacherData.senha, 10);
   const teacherWithHashedPassword = {
     ...teacherData,
@@ -56,7 +55,6 @@ export const updateTeacherService = async (
     });
   }
 
-  // Se estiver atualizando a senha, fazer hash
   if (content.senha) {
     content.senha = await bcrypt.hash(content.senha, 10);
   }

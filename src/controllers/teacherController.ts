@@ -45,9 +45,8 @@ export const createTeacher = async (req: Request, res: Response) => {
     });
   }
 
-  const postData = parseResult.data;
-  const createdResponse = await Service.createTeacherService(postData);
-  // Desempacota body para retornar apenas o objeto criado
+  const teacherData = parseResult.data;
+  const createdResponse = await Service.createTeacherService(teacherData);
   return res.status(createdResponse.statusCode).json(createdResponse.body);
 };
 

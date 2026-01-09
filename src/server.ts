@@ -1,12 +1,12 @@
 import createApp from "./app";
 import { env } from "./config/env";
-import initDB from "./config/mongodb"; // ⬅️ Conecta ao banco
+import initDB from "./config/mongodb";
 import { seedDatabase } from "./config/seed";
 
 async function main() {
   try {
     await initDB();
-    await seedDatabase(); // ⬅️ Semeia dados de exemplo
+    await seedDatabase();
     const app = createApp();
 
     app.listen(env.PORT, () => {

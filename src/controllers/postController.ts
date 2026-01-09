@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import * as Service from "../services/postsService";
-import { ContentModel } from "../models/content-model";
 import { postInputSchema } from "../validations/postValidation";
 
-export const getPosts = async (req: Request, res: Response) => {
+export const getPost = async (req: Request, res: Response) => {
   const { page = "1", limit = "10", author, subject } = req.query;
 
   const filters = {
@@ -26,9 +25,6 @@ export const getPosts = async (req: Request, res: Response) => {
 export const getPostById = async (req: Request, res: Response) => {
   const id = req.params.id;
   const httpResponse = await Service.getPostByIdService(id);
-  if (httpResponse.statusCode === 204) {
-    return res.sendStatus(204);
-  }
   return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
 
@@ -44,7 +40,6 @@ export const createPost = async (req: Request, res: Response) => {
 
   const postData = parseResult.data;
   const createdResponse = await Service.createPostService(postData);
-  // Desempacota body para retornar apenas o objeto criado
   return res.status(createdResponse.statusCode).json(createdResponse.body);
 };
 
@@ -56,7 +51,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
 export const updatePost = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const bodyData: ContentModel = req.body;
+  const bodyData = req.body;
   const httpResponse = await Service.updatePostService(id, bodyData);
   return res.status(httpResponse.statusCode).json(httpResponse.body);
 };

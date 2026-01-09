@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import route from "./routes";
+import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
-import cors from "cors";
 
 function createApp() {
   const app = express();
@@ -17,23 +17,19 @@ function createApp() {
   );
 
   app.use(express.json());
-  
-  // Rota raiz para teste
+
   app.get("/", (req: Request, res: Response) => {
-    res.json({ 
-      message: "API funcionando!", 
-      routes: ["/api/posts", "/api/teachers"],
-      swagger: "/api-docs"
+    res.json({
+      message: "API funcionando!",
+      routes: ["/api/posts", "/api/teachers", "/api/students", "/api/auth"],
+      swagger: "/api-docs",
     });
   });
-  
-  // Registrar rotas da API
+
   app.use("/api", route);
-  
-  // Registrar Swagger
+
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-  // Rota 404 para endpoints não encontrados
   app.use((req: Request, res: Response) => {
     res.status(404).json({ message: "Rota não encontrada" });
   });

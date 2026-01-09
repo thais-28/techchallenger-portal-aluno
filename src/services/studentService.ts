@@ -1,10 +1,10 @@
-import { IStudent, IStudentInput } from "../types/student";
+import { IStudent } from "../types/student";
 import * as StudentRepository from "../repositories/studentRepository";
 import * as HttpResponse from "../utils/http-helper";
 import bcrypt from "bcrypt";
 
 export const getStudentService = async (
-  filters: any,
+  filters: Record<string, unknown>,
   pagination: { page: number; limit: number }
 ) => {
   const students = await StudentRepository.findAllStudents(filters, pagination);
@@ -16,12 +16,11 @@ export const getStudentService = async (
   return HttpResponse.noContent();
 };
 
-export const createStudentService = async (studentData: IStudentInput) => {
+export const createStudentService = async (studentData: IStudent) => {
   if (!studentData || Object.keys(studentData).length === 0) {
     return HttpResponse.badRequest({ message: "Dados obrigatórios ausentes" });
   }
 
-  // Hash da senha
   const hashedPassword = await bcrypt.hash(studentData.senha, 10);
   const studentWithHashedPassword = {
     ...studentData,
@@ -44,7 +43,6 @@ export const updateStudentService = async (
     });
   }
 
-  // Se estiver atualizando a senha, fazer hash
   if (content.senha) {
     content.senha = await bcrypt.hash(content.senha, 10);
   }

@@ -39,7 +39,7 @@ const router = Router();
  *       204:
  *         description: Nenhum post encontrado
  */
-router.get("/", PostController.getPosts);
+router.get("/", PostController.getPost);
 
 /**
  * @swagger

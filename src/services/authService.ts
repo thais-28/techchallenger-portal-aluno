@@ -4,30 +4,40 @@ import { StudentModel } from "../models/studentModel";
 import { generateToken } from "../utils/jwt";
 import * as HttpResponse from "../utils/http-helper";
 
+interface UserBase {
+  _id: unknown;
+  nome: string;
+  email: string;
+  senha: string;
+}
+
 export const loginService = async (email: string, senha: string) => {
-  // Busca professor
-  let user = await TeacherModel.findOne({ email }).lean();
+  let user: UserBase | null = null;
   let role: "teacher" | "student" = "teacher";
 
-  // Se não encontrou professor, busca aluno
-  if (!user) {
-    user = await StudentModel.findOne({ email }).lean();
-    role = "student";
+  const teacher = await TeacherModel.findOne({ email }).lean();
+  if (teacher) {
+    user = teacher;
+    role = "teacher";
+  } else {
+    const student = await StudentModel.findOne({ email }).lean();
+    if (student) {
+      user = student;
+      role = "student";
+    }
   }
 
   if (!user) {
     return HttpResponse.badRequest({ message: "Credenciais inválidas" });
   }
 
-  // Verifica senha
   const isPasswordValid = await bcrypt.compare(senha, user.senha);
   if (!isPasswordValid) {
     return HttpResponse.badRequest({ message: "Credenciais inválidas" });
   }
 
-  // Gera token
   const token = generateToken({
-    id: user._id.toString(),
+    id: String(user._id),
     email: user.email,
     role,
   });
