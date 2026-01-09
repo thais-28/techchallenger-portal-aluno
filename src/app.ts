@@ -9,7 +9,11 @@ function createApp() {
 
   app.use(
     cors({
-      origin: "http://localhost:3333",
+      origin: [
+        "http://localhost:3333",
+        "http://localhost:8081",
+        "http://192.168.0.14:8081",
+      ],
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
       allowedHeaders: ["Content-Type", "Authorization"],
